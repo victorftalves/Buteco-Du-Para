@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buteco do Pará - Experiência Paraense em Icoaraci</title>
+    <!-- Carrega o Tailwind CSS para estilização e o Google Font Inter -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="textures.css">
+    <link rel="stylesheet" href="animations.css">
+    <style>
+        /* Configuração de cores e fonte personalizada do Tailwind */
+        :root {
+            --para-blue: #012B5B;
+            --para-red: #D32C2C;
+            --para-gray: #E5E7EB;
+            --para-gold: #F59E0B;
+            --para-dark: #1F2937;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--para-gray);
+        }
+
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Background Hero com gradiente e textura */
+        .bg-hero {
+            background: linear-gradient(135deg, rgba(1, 43, 91, 0.9) 0%, rgba(211, 44, 44, 0.8) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.15"/><circle cx="10" cy="60" r="0.8" fill="%23ffffff" opacity="0.12"/><circle cx="90" cy="40" r="0.6" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>'),
+                        url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: 200px 200px, cover, cover;
+            background-position: 0 0, center, center;
+            background-attachment: fixed;
+            animation: grain-animation 8s linear infinite;
+        }
+
+        @keyframes grain-animation {
+            0%, 100% { background-position: 0 0, center, center; }
+            25% { background-position: -50px -50px, center, center; }
+            50% { background-position: -100px -100px, center, center; }
+            75% { background-position: -150px -150px, center, center; }
+        }
+
+        /* Texturas e padrões */
+        .texture-wood {
+            background-image: 
+                linear-gradient(90deg, rgba(139, 69, 19, 0.1) 50%, transparent 50%),
+                linear-gradient(rgba(160, 82, 45, 0.1) 50%, transparent 50%);
+            background-size: 20px 20px, 40px 40px;
+        }
+
+        .texture-paper {
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Animações personalizadas */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(211, 44, 44, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(211, 44, 44, 0.6); }
+        }
+
+        @keyframes slide-in-left {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slide-in-right {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fade-in-up {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .animate-slide-in-left {
+            animation: slide-in-left 0.8s ease-out forwards;
+        }
+
+        .animate-slide-in-right {
+            animation: slide-in-right 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-up {
+            animation: fade-in-up 0.6s ease-out forwards;
+        }
+
+        /* Estilo para a mensagem de confirmação da reserva */
+        #reservation-message {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+        }
+        #reservation-message.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Efeitos de hover melhorados */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--para-red) 0%, #B91C1C 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--para-blue) 0%, #1E3A8A 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-secondary:hover::before {
+            left: 100%;
+        }
+
+        /* Menu items com efeitos especiais */
+        .menu-item {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .menu-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--para-red), var(--para-gold));
+            transition: width 0.3s ease;
+        }
+
+        .menu-item:hover::after {
+            width: 100%;
+        }
+
+        /* Parallax scrolling */
+        .parallax {
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        /* Navegação com glassmorphism */
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Scroll reveal animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'para-blue': 'var(--para-blue)',
+                        'para-red': 'var(--para-red)',
+                        'para-gray': 'var(--para-gray)',
+                        'para-gold': 'var(--para-gold)',
+                        'para-dark': 'var(--para-dark)',
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Navegação (Header) - Fixo no topo e Responsivo com Glassmorphism -->
+    <header class="fixed top-0 left-0 right-0 z-50 nav-glass shadow-xl">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <!-- ESPAÇO DO LOGOTIPO -->
+            <a href="#inicio" class="flex items-center animate-fade-in-up">
+                <div class="bg-gradient-to-r from-para-blue to-para-red p-3 rounded-xl shadow-lg">
+                    <span class="text-white font-display font-bold text-xl">BUTECO</span>
+                </div>
+            </a>
+            
+            <!-- Links Desktop -->
+            <nav class="hidden lg:flex space-x-8">
+                <a href="#inicio" class="text-para-blue hover:text-para-red transition duration-300 font-medium relative group">
+                    Início
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-para-red transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#menu" class="text-para-blue hover:text-para-red transition duration-300 font-medium relative group">
+                    Menu
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-para-red transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#reservas" class="text-para-blue hover:text-para-red transition duration-300 font-medium relative group">
+                    Reservas
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-para-red transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contato" class="text-para-blue hover:text-para-red transition duration-300 font-medium relative group">
+                    Contato
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-para-red transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </nav>
+
+            <!-- Botão de Menu Mobile -->
+            <button id="mobile-menu-button" class="lg:hidden p-2 text-para-blue rounded-md focus:outline-none focus:ring-2 focus:ring-para-red transition-all duration-300 hover:bg-para-gray">
+                <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <nav id="mobile-menu" class="lg:hidden hidden px-4 pb-4 space-y-2 glass-morphism border-t border-white/20">
+            <a href="#inicio" class="block text-para-blue hover:bg-white/20 p-3 rounded-lg font-medium transition-all duration-300">Início</a>
+            <a href="#menu" class="block text-para-blue hover:bg-white/20 p-3 rounded-lg font-medium transition-all duration-300">Menu</a>
+            <a href="#reservas" class="block text-para-blue hover:bg-white/20 p-3 rounded-lg font-medium transition-all duration-300">Reservas</a>
+            <a href="#contato" class="block text-para-blue hover:bg-white/20 p-3 rounded-lg font-medium transition-all duration-300">Contato</a>
+        </nav>
+    </header>
+    <!-- Fim do Header -->
+
+    <main>
+        <!-- Seção de Início (Hero) -->
+        <section id="inicio" class="pt-20 bg-hero buteco-texture-hero min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+            <!-- Elementos decorativos flutuantes -->
+            <div class="absolute top-20 left-10 w-20 h-20 bg-para-gold/20 rounded-full animate-float-complex animate-pulse-glow-advanced"></div>
+            <div class="absolute bottom-20 right-10 w-16 h-16 bg-white/10 rounded-full animate-float-slow delay-300" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-20 w-12 h-12 bg-para-red/30 rounded-full animate-breathe delay-600" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/3 right-1/4 w-8 h-8 bg-para-blue/20 rounded-full animate-rotate-gentle"></div>
+            <div class="absolute bottom-1/3 left-1/3 w-14 h-14 bg-para-gold/15 rounded-full animate-wave-motion delay-400"></div>
+            
+            <div class="text-center glass-morphism p-12 rounded-3xl max-w-5xl mx-4 shadow-2xl animate-zoom-in-advanced hover-glow">
+                <h1 class="text-5xl sm:text-7xl font-display font-black mb-6 tracking-tight leading-tight animate-fade-in-down-advanced delay-200">
+                    MAIS QUE BUTECO, É 
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-para-red to-para-gold animate-text-glow">
+                        EXPERIÊNCIA PARAENSE
+                    </span>
+                </h1>
+                <p class="text-xl sm:text-3xl mb-10 font-light opacity-90 animate-fade-in-up-advanced delay-400">
+                    Sabor autêntico e tradição de Belém, agora em <strong>Icoaraci</strong>
+                </p>
+                <div class="space-y-4 sm:space-y-0 sm:space-x-6 flex flex-col sm:flex-row justify-center">
+                    <a href="#menu" class="btn-primary btn-micro hover-lift inline-block px-10 py-4 text-white font-bold rounded-full shadow-2xl hover:shadow-para-red/50 transition-all duration-300 animate-slide-in-left-advanced delay-600">
+                        Ver o Menu Completo
+                    </a>
+                    <a href="#reservas" class="btn-secondary btn-micro hover-lift inline-block px-10 py-4 text-white font-bold rounded-full shadow-2xl hover:shadow-para-blue/50 transition-all duration-300 animate-slide-in-right-advanced delay-800">
+                        Fazer uma Reserva
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Menu (Vendas) -->
+        <section id="menu" class="py-20 sm:py-32 bg-gradient-to-br from-white via-para-gray/30 to-white buteco-texture-menu pattern-para relative">
+            <!-- Elementos decorativos de fundo -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute top-10 left-10 w-32 h-32 bg-para-blue rounded-full"></div>
+                <div class="absolute bottom-10 right-10 w-24 h-24 bg-para-red rounded-full"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-para-gold rounded-full"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16 scroll-trigger">
+                    <h2 class="text-5xl font-display font-bold text-para-blue mb-6">
+                        Sabores do Pará
+                    </h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-para-red to-para-gold mx-auto mb-6"></div>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                        A culinária que você ama, com a qualidade e o toque especial do Buteco do Pará. 
+                        Peça para viagem ou deguste conosco em nosso ambiente acolhedor.
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-16 mt-16">
+                    <!-- Coluna 1: Petiscos e Porções -->
+                    <div class="scroll-trigger-left">
+                        <div class="bg-white rounded-3xl p-8 shadow-2xl hover-lift hover-tilt texture-wood-advanced texture-shimmer relative overflow-hidden">
+                            <h3 class="text-4xl font-display font-bold text-para-red mb-8 text-center">
+                                Petiscos & Porções
+                            </h3>
+                            
+                            <div class="space-y-6">
+                                <!-- Item: Casquinha de Caranguejo (Destaque) -->
+                                <div class="menu-item-advanced border-b border-para-gray/30 pb-6 p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-xl font-bold text-para-blue">Casquinha de Caranguejo</h4>
+                                        <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 28,00</span>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Carne de caranguejo desfiada e temperada, gratinada na casquinha. Ideal para começar a experiência paraense.</p>
+                                </div>
+                                
+                                <!-- Item: Pastel 6 unidades -->
+                                <div class="menu-item-advanced border-b border-para-gray/30 pb-6 p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-xl font-bold text-para-blue">Pastel (6 Unidades)</h4>
+                                        <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 32,00</span>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Escolha entre: Camarão com Jambu, Carne ou Queijo. Massa crocante e recheio generoso.</p>
+                                </div>
+
+                                <!-- Item: Camarão empanado -->
+                                <div class="menu-item-advanced border-b border-para-gray/30 pb-6 p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-xl font-bold text-para-blue">Camarão Empanado</h4>
+                                        <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 65,00</span>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Porção generosa de camarões crocantes, fritos no ponto perfeito e servidos com molho tártaro especial.</p>
+                                </div>
+
+                                <!-- Item: Camarão alho e óleo -->
+                                <div class="menu-item-advanced border-b border-para-gray/30 pb-6 p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-xl font-bold text-para-blue">Camarão Alho e Óleo</h4>
+                                        <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 60,00</span>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Camarões salteados no azeite, alho fresco e pimenta. Acompanha pão de alho quentinho.</p>
+                                </div>
+                                
+                                <!-- Item: Isca de peixe -->
+                                <div class="menu-item-advanced border-b border-para-gray/30 pb-6 p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-xl font-bold text-para-blue">Isca de Peixe Crocante</h4>
+                                        <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 55,00</span>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Tiras de peixe fresco empanadas com tempero especial, ideal para compartilhar na mesa.</p>
+                                </div>
+
+                                <!-- Item: Calabresa acebolada -->
+                                <div class="menu-item-advanced border-b border-para-gray/30 pb-6 p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-xl font-bold text-para-blue">Calabresa Acebolada</h4>
+                                        <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 38,00</span>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Servida na chapa quente, com cebola refogada e acompanhada de farofa de dendê tradicional.</p>
+                                </div>
+
+                                <!-- Item: Batata frita -->
+                                <div class="menu-item-advanced p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-xl font-bold text-para-blue">Batata Frita</h4>
+                                        <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 25,00</span>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Porção de batatas crocantes, temperadas com sal e orégano. O petisco que não pode faltar.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Coluna 2: Pratos Principais e Bebidas -->
+                    <div class="scroll-trigger-right">
+                        <div class="space-y-8">
+                            <!-- Pratos Principais -->
+                            <div class="bg-white rounded-3xl p-8 shadow-2xl hover-lift hover-glow texture-leather glass-colored relative overflow-hidden">
+                                <h3 class="text-4xl font-display font-bold text-para-red mb-8 text-center">
+                                    Pratos Principais
+                                </h3>
+                                
+                                <div class="space-y-6">
+                                    <!-- Item: Filhote na Chapa (Destaque) -->
+                                    <div class="menu-item-advanced border-b border-para-gray/30 pb-6 p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="text-xl font-bold text-para-blue">Filhote na Chapa com Camarão</h4>
+                                            <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 95,00</span>
+                                        </div>
+                                        <p class="text-gray-700 leading-relaxed">Um clássico paraense. Filhote fresco grelhado e coberto com molho de camarão e cheiro verde aromático.</p>
+                                    </div>
+                                    
+                                    <!-- Item: Filé com fritas -->
+                                    <div class="menu-item-advanced p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="text-xl font-bold text-para-blue">Filé com Fritas</h4>
+                                            <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 75,00</span>
+                                        </div>
+                                        <p class="text-gray-700 leading-relaxed">Mignon suculento cortado em tiras, servido com batata frita dourada e arroz branco soltinho.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bebidas -->
+                            <div class="bg-white rounded-3xl p-8 shadow-2xl hover-lift hover-slide texture-bamboo glass-frosted relative overflow-hidden">
+                                <h3 class="text-4xl font-display font-bold text-para-red mb-8 text-center">
+                                    Bebidas & Cervejas
+                                </h3>
+                                
+                                <div class="space-y-6">
+                                    <!-- Item: Chopp (Destaque) -->
+                                    <div class="menu-item-advanced border-b border-para-gray/30 pb-6 p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="text-xl font-bold text-para-blue">Chopp Paraense (300ml)</h4>
+                                            <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 9,00</span>
+                                        </div>
+                                        <p class="text-gray-700 leading-relaxed">O chopp mais gelado de Icoaraci, perfeito para acompanhar nossos petiscos especiais.</p>
+                                    </div>
+                                    
+                                    <div class="menu-item-advanced p-4 rounded-xl hover:bg-para-gray/20 transition-all duration-300">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="text-xl font-bold text-para-blue">Refrigerantes e Sucos</h4>
+                                            <span class="text-2xl font-black text-para-red bg-para-gold/20 px-3 py-1 rounded-full">R$ 6,00 - R$ 12,00</span>
+                                        </div>
+                                        <p class="text-gray-700 leading-relaxed">Diversas opções refrescantes e típicas para acompanhar sua refeição.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botão de Vendas (Link direto para WhatsApp) -->
+                <div class="text-center mt-16 scroll-trigger-scale">
+                    <a href="https://wa.me/5591999999999" target="_blank" class="inline-block px-12 py-5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-full shadow-2xl hover:shadow-green-500/50 transition-all duration-300 btn-micro hover-lift animate-heartbeat text-lg">
+                        🛵 Faça seu Pedido Online (Delivery/Takeout)
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Reservas -->
+        <section id="reservas" class="py-20 sm:py-32 bg-gradient-to-br from-para-blue via-para-blue to-para-dark relative overflow-hidden">
+            <!-- Elementos decorativos de fundo -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-20 left-20 w-40 h-40 bg-para-red rounded-full animate-float"></div>
+                <div class="absolute bottom-20 right-20 w-32 h-32 bg-para-gold rounded-full animate-float" style="animation-delay: 1s;"></div>
+                <div class="absolute top-1/2 right-1/4 w-24 h-24 bg-white rounded-full animate-float" style="animation-delay: 2s;"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl relative z-10">
+                <div class="text-center mb-12 scroll-trigger">
+                    <h2 class="text-5xl font-display font-bold text-white mb-6">Reserve Sua Mesa</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-para-red to-para-gold mx-auto mb-6"></div>
+                    <p class="text-xl text-gray-300 leading-relaxed">
+                        Garanta seu lugar no Buteco mais charmoso de Icoaraci e viva uma experiência inesquecível.
+                    </p>
+                </div>
+
+                <form id="reservation-form" class="glass-morphism p-10 rounded-3xl shadow-2xl scroll-trigger-scale hover-glow">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-white mb-2">Seu Nome Completo</label>
+                            <input type="text" id="name" required class="form-field w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl shadow-sm focus:ring-2 focus:ring-para-red focus:border-para-red text-white placeholder-gray-300 backdrop-blur-sm transition-all duration-300" placeholder="Digite seu nome">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-white mb-2">Telefone (WhatsApp)</label>
+                            <input type="tel" id="phone" required class="form-field w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl shadow-sm focus:ring-2 focus:ring-para-red focus:border-para-red text-white placeholder-gray-300 backdrop-blur-sm transition-all duration-300" placeholder="(91) 99999-9999">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <label for="date" class="block text-sm font-medium text-white mb-2">Data</label>
+                            <input type="date" id="date" required class="form-field w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl shadow-sm focus:ring-2 focus:ring-para-red focus:border-para-red text-white backdrop-blur-sm transition-all duration-300">
+                        </div>
+                        <div>
+                            <label for="time" class="block text-sm font-medium text-white mb-2">Horário</label>
+                            <select id="time" required class="form-field w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl shadow-sm focus:ring-2 focus:ring-para-red focus:border-para-red text-white backdrop-blur-sm transition-all duration-300">
+                                <option value="">Selecione</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="guests" class="block text-sm font-medium text-white mb-2">Pessoas</label>
+                            <select id="guests" required class="form-field w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl shadow-sm focus:ring-2 focus:ring-para-red focus:border-para-red text-white backdrop-blur-sm transition-all duration-300">
+                                <option value="">Quantas?</option>
+                                <option value="1">1 pessoa</option>
+                                <option value="2">2 pessoas</option>
+                                <option value="3">3 pessoas</option>
+                                <option value="4">4 pessoas</option>
+                                <option value="5">5 pessoas</option>
+                                <option value="6+">6+ pessoas</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <label for="message" class="block text-sm font-medium text-white mb-2">Observações (Opcional)</label>
+                        <textarea id="message" rows="3" class="form-field w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl shadow-sm focus:ring-2 focus:ring-para-red focus:border-para-red text-white placeholder-gray-300 backdrop-blur-sm transition-all duration-300" placeholder="Alguma preferência especial ou comemoração?"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full btn-primary btn-micro hover-lift py-4 text-white font-bold rounded-xl shadow-2xl hover:shadow-para-red/50 transition-all duration-300 animate-pulse-glow-advanced text-lg">
+                        Confirmar Reserva
+                    </button>
+                </form>
+
+                <!-- Mensagem de confirmação -->
+                <div id="reservation-message" class="mt-8 p-6 bg-green-500 text-white rounded-xl text-center shadow-xl">
+                    <h3 class="text-xl font-bold mb-2">🎉 Reserva Confirmada!</h3>
+                    <p>Entraremos em contato em breve para confirmar os detalhes. Obrigado!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Contato -->
+        <section id="contato" class="py-20 sm:py-32 bg-gradient-to-br from-white via-para-gray/30 to-white pattern-azulejo texture-paper-craft relative">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 scroll-trigger">
+                    <h2 class="text-5xl font-display font-bold text-para-blue mb-6">Venha nos Visitar</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-para-red to-para-gold mx-auto mb-6"></div>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                        Estamos localizados no coração de Icoaraci, prontos para recebê-lo com o melhor da culinária paraense.
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-16 items-start">
+                    <!-- Detalhes de Contato e Horário -->
+                    <div class="scroll-trigger-left">
+                        <div class="bg-white rounded-3xl p-10 shadow-2xl hover-lift hover-tilt texture-fabric glass-frosted relative overflow-hidden">
+                            <h3 class="text-3xl font-display font-bold text-para-red mb-8 text-center">Informações Essenciais</h3>
+                            
+                            <div class="space-y-8">
+                                <div class="p-6 bg-para-gray/20 rounded-2xl">
+                                    <p class="font-bold text-para-blue text-xl mb-3 flex items-center">
+                                        📍 Localização
+                                    </p>
+                                    <p class="text-gray-700 leading-relaxed mb-3">Rua Siqueira Mendes S/N, PA, 66810-050, Icoaraci, Belém - PA</p>
+                                    <a href="https://maps.app.goo.gl/IcoaraciExample" target="_blank" class="text-para-red hover:text-red-700 font-medium inline-flex items-center transition-colors duration-300">
+                                        Ver no Google Maps →
+                                    </a>
+                                </div>
+
+                                <div class="p-6 bg-para-gray/20 rounded-2xl">
+                                    <p class="font-bold text-para-blue text-xl mb-4 flex items-center">
+                                        🕒 Horário de Funcionamento
+                                    </p>
+                                    <ul class="text-gray-700 space-y-2 leading-relaxed">
+                                        <li class="flex justify-between"><span>Terça a Quinta:</span> <span class="font-semibold">18:00 - 00:00</span></li>
+                                        <li class="flex justify-between"><span>Sexta e Sábado:</span> <span class="font-semibold">18:00 - 02:00</span></li>
+                                        <li class="flex justify-between"><span>Domingo:</span> <span class="font-semibold">12:00 - 23:00</span></li>
+                                        <li class="flex justify-between"><span>Segunda:</span> <span class="text-para-red font-semibold">Fechado</span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="p-6 bg-para-gray/20 rounded-2xl">
+                                    <p class="font-bold text-para-blue text-xl mb-4 flex items-center">
+                                        📞 Contato
+                                    </p>
+                                    <div class="space-y-3 text-gray-700">
+                                        <p><strong>Telefone/WhatsApp:</strong> (91) 99999-9999</p>
+                                        <p><strong>Email:</strong> butecodupara@gmail.com</p>
+                                        <p><strong>Instagram:</strong> <a href="https://instagram.com/obutecodupara" target="_blank" class="text-para-red hover:text-red-700 font-medium transition-colors duration-300">@obutecodupara</a></p>
+                                    </div>
+                                    <a href="https://wa.me/5591999999999" target="_blank" class="inline-block mt-4 px-6 py-3 bg-green-500 text-white font-medium rounded-xl hover:bg-green-600 transition-all duration-300 transform hover:scale-105">
+                                        💬 WhatsApp para Delivery
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mapa (Placeholder visual) -->
+                    <div class="scroll-trigger-right">
+                        <div class="rounded-3xl overflow-hidden shadow-2xl h-96 lg:h-full hover-lift hover-glow">
+                            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Vista de Icoaraci - Localização do Buteco do Pará" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-para-blue to-para-dark text-white py-12 relative overflow-hidden buteco-texture-footer pattern-waves">
+        <!-- Elementos decorativos de fundo -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-20 h-20 bg-para-red rounded-full animate-float-complex"></div>
+            <div class="absolute bottom-10 right-10 w-16 h-16 bg-para-gold rounded-full animate-rotate-pendulum" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/2 w-12 h-12 bg-white rounded-full animate-breathe" style="animation-delay: 2s;"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <p class="mb-8 text-xl font-medium">Conecte-se com o <span class="font-display font-bold text-para-gold">Buteco do Pará</span></p>
+            
+            <div class="flex justify-center space-x-8 mb-10">
+                <!-- Botão Instagram -->
+                <a href="https://instagram.com/obutecodupara" target="_blank" 
+                   class="p-4 rounded-full bg-gradient-to-r from-para-red to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-300 btn-micro hover-lift animate-pulse-glow-advanced shadow-2xl hover:shadow-para-red/50"
+                   aria-label="Instagram @obutecodupara">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                    </svg>
+                </a>
+                
+                <!-- Botão Email (Gmail) -->
+                <a href="mailto:butecodupara@gmail.com" 
+                   class="p-4 rounded-full bg-gradient-to-r from-para-red to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-300 btn-micro hover-lift animate-pulse-blue shadow-2xl hover:shadow-para-red/50"
+                   aria-label="Email butecodupara@gmail.com">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                        <rect width="20" height="16" x="2" y="4" rx="2"/>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="border-t border-white/20 pt-8">
+                <p class="text-sm text-gray-300">&copy; 2024 Buteco do Pará. Todos os direitos reservados.</p>
+                <p class="text-xs text-gray-400 mt-2">Desenvolvido com ❤️ para a melhor experiência paraense</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script JavaScript para funcionalidades avançadas -->
+    <script>
+        // Variáveis de estado para o menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle do menu mobile com animação aprimorada
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuButton.querySelector('svg');
+            icon.style.transform = mobileMenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+            icon.style.transition = 'transform 0.3s ease';
+        });
+
+        // Simulação do formulário de Reservas com animações
+        const reservationForm = document.getElementById('reservation-form');
+        const reservationMessage = document.getElementById('reservation-message');
+
+        reservationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const guests = document.getElementById('guests').value;
+            
+            console.log("Dados da Reserva Enviados (Simulação):", { name, phone, date, time, guests });
+            
+            // Animação de loading no botão
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Processando...';
+            submitButton.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                // Exibir a mensagem de sucesso com animação
+                reservationMessage.classList.add('show');
+                
+                // Restaurar botão
+                submitButton.textContent = originalText;
+                submitButton.style.opacity = '1';
+
+                // Limpar o formulário
+                reservationForm.reset();
+
+                // Ocultar a mensagem de sucesso após 5 segundos
+                setTimeout(() => {
+                    reservationMessage.classList.remove('show');
+                }, 5000);
+            }, 1500);
+        });
+
+        // Scroll suave para os links de navegação
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+
+                // Fecha o menu mobile após clicar em um link
+                if (!mobileMenu.classList.contains('hidden')) {
+                     mobileMenu.classList.add('hidden');
+                     const icon = mobileMenuButton.querySelector('svg');
+                     icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+
+        // Sistema de scroll reveal avançado
+        const scrollTriggerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, scrollTriggerOptions);
+
+        // Observar elementos com diferentes tipos de animação
+        document.querySelectorAll('.scroll-trigger, .scroll-trigger-left, .scroll-trigger-right, .scroll-trigger-scale').forEach(el => {
+            scrollObserver.observe(el);
+        });
+
+        // Parallax effect aprimorado
+        let ticking = false;
+        
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+            
+            // Parallax para o hero
+            const heroSection = document.querySelector('.bg-hero');
+            if (heroSection) {
+                const speed = scrolled * 0.3;
+                heroSection.style.transform = `translateY(${speed}px)`;
+            }
+            
+            // Parallax para elementos flutuantes
+            const floatingElements = document.querySelectorAll('.animate-float-complex, .animate-float-slow');
+            floatingElements.forEach((element, index) => {
+                const speed = (scrolled * (0.1 + index * 0.05));
+                element.style.transform = `translateY(${speed}px)`;
+            });
+            
+            ticking = false;
+        }
+
+        function requestParallaxUpdate() {
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestParallaxUpdate);
+
+        // Efeitos de hover aprimorados para itens do menu
+        document.querySelectorAll('.menu-item-advanced').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                // Adicionar efeito de brilho
+                this.style.boxShadow = '0 10px 25px rgba(211, 44, 44, 0.15)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Cursor personalizado (opcional)
+        let cursor = null;
+        
+        function createCustomCursor() {
+            cursor = document.createElement('div');
+            cursor.className = 'cursor-trail';
+            document.body.appendChild(cursor);
+            
+            document.addEventListener('mousemove', (e) => {
+                if (cursor) {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                }
+            });
+        }
+
+        // Animações de entrada escalonadas
+        function staggerAnimations() {
+            const menuItems = document.querySelectorAll('.menu-item-advanced');
+            menuItems.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+
+        // Efeito de typing para o título (melhorado)
+        function typewriterEffect() {
+            const heroTitle = document.querySelector('#inicio h1 span');
+            if (heroTitle) {
+                const text = heroTitle.textContent;
+                heroTitle.textContent = '';
+                heroTitle.style.borderRight = '2px solid #D32C2C';
+                
+                let i = 0;
+                const timer = setInterval(() => {
+                    if (i < text.length) {
+                        heroTitle.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(timer);
+                        setTimeout(() => {
+                            heroTitle.style.borderRight = 'none';
+                        }, 1000);
+                    }
+                }, 100);
+            }
+        }
+
+        // Contador animado (para estatísticas futuras)
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = Math.floor(current);
+                }, 20);
+            });
+        }
+
+        // Efeito de partículas de fundo
+        function createParticles() {
+            const particleContainer = document.querySelector('.bg-hero');
+            if (particleContainer) {
+                for (let i = 0; i < 5; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle-bg';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particleContainer.appendChild(particle);
+                }
+            }
+        }
+
+        // Smooth scroll para navegação
+        function smoothScrollToSection(targetId) {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = targetElement.offsetTop - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Detecção de dispositivo móvel
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+
+        // Otimizações para mobile
+        function optimizeForMobile() {
+            if (isMobile()) {
+                // Reduzir animações em dispositivos móveis
+                document.querySelectorAll('.animate-float-complex').forEach(el => {
+                    el.style.animation = 'floatSlow 6s ease-in-out infinite';
+                });
+                
+                // Desabilitar parallax em mobile para melhor performance
+                window.removeEventListener('scroll', requestParallaxUpdate);
+            }
+        }
+
+        // Inicialização quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Executar otimizações
+            optimizeForMobile();
+            
+            // Criar efeitos visuais
+            createParticles();
+            staggerAnimations();
+            
+            // Inicializar cursor personalizado (apenas desktop)
+            if (!isMobile()) {
+                createCustomCursor();
+            }
+            
+            // Adicionar classe de carregamento completo
+            document.body.classList.add('loaded');
+            
+            console.log('🎉 Buteco do Pará - Site carregado com sucesso!');
+        });
+
+        // Prevenção de animações para usuários que preferem movimento reduzido
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.style.setProperty('--animation-duration', '0.01ms');
+        }
+
+        // Lazy loading para imagens (se necessário)
+        function lazyLoadImages() {
+            const images = document.querySelectorAll('img[data-src]');
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+        }
+
+        // Performance monitoring
+        window.addEventListener('load', () => {
+            const loadTime = performance.now();
+            console.log(`⚡ Site carregado em ${Math.round(loadTime)}ms`);
+        });
+    </script>
+</body>
+</html>
