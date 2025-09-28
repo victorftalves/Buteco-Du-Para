@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buteco do Pará - Experiência Paraense em Icoaraci</title>
+    <!-- FAVICON ADICIONADO -->
+    <link rel="icon" type="image/png" href="favicon.png">
     <!-- Carrega o Tailwind CSS para estilização e o Google Font Inter -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
@@ -251,9 +253,10 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
             <!-- ESPAÇO DO LOGOTIPO -->
             <a href="#inicio" class="flex items-center animate-fade-in-up">
-                <!-- SUBSTITUA ESTA URL PELA SUA LOGO OFICIAL (PNG, SVG, etc.). Mantenha o h-10 w-auto para o tamanho ideal. -->
+                <!-- 🚨🚨🚨 SUBSTITUA ESTA URL PELA SUA LOGO OFICIAL (PNG, SVG, etc.). 🚨🚨🚨 -->
+                <!-- Use a URL direta da sua imagem aqui (Exemplo: https://seudominio.com/logo.png) -->
                 <img id="official-logo" 
-                     src="logobuteco.png" 
+                     src="https://placehold.co/120x40/012B5B/F59E0B/png?text=COLE+A+SUA+LOGO+AQUI" 
                      alt="Logo do Buteco do Pará" 
                      class="h-10 w-auto rounded-lg shadow-lg" 
                      onerror="this.onerror=null; this.src='https://placehold.co/120x40/D32C2C/FFFFFF?text=BUTECO';">
@@ -627,10 +630,20 @@
                         </div>
                     </div>
 
-                    <!-- Mapa (Placeholder visual) -->
+                    <!-- Mapa (Mapa Interativo do Google Maps) -->
                     <div class="scroll-trigger-right">
                         <div class="rounded-3xl overflow-hidden shadow-2xl h-96 lg:h-full hover-lift hover-glow">
-                            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Vista de Icoaraci - Localização do Buteco do Pará" class="w-full h-full object-cover">
+                            <!-- 🚨 COLOQUE SEU IFRAME DO GOOGLE MAPS AQUI 🚨 -->
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1988.6672323719262!2d-48.49884521443653!3d-1.2882855649931753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x92a460b54e7d0d0f%3A0x67a3f8a0e88924b!2sIcoaraci%2C%20Bel%C3%A9m%20-%20PA!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Localização do Buteco do Pará em Icoaraci">
+                            </iframe>
                         </div>
                     </div>
                 </div>
